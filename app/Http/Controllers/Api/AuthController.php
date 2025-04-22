@@ -8,29 +8,32 @@ use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 
-class AuthViewController extends Controller
+class AuthController extends Controller
 {
     //
 
+    
     public function register(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'name'     => 'required|string|max:255',
-            'email'    => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|min:6|confirmed'
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users',
+            'password' => 'required|string|min:8|confirmed', // Password confirmation
         ]);
 
         if ($validator->fails()) {
-            return response()->json(['errors' => $validator->errors()], 422);
+            return response()->json(['errors' => $validator->errors()], 400);
         }
 
+        // Create a new user
         $user = User::create([
-            'name'     => $request->name,
-            'email'    => $request->email,
+            'name' => $request->name,
+            'email' => $request->email,
             'password' => Hash::make($request->password),
         ]);
 
-        return response()->json(['message' => 'Registration successful', 'user' => $user], 201);
+        // Respond with the user details (can add token if using token-based auth like JWT or Passport)
+        return response()->json(['message' => 'User registered successfully', 'user' => $user], 201);
     }
 
     public function login(Request $request)
@@ -58,5 +61,4 @@ class AuthViewController extends Controller
             'user'    => $user
         ], 200);
     }
-
 }

@@ -1,7 +1,7 @@
 <?php
 
-use App\Http\Controllers\Api\AuthViewController;
+use App\Http\Controllers\Api\AuthController;
 use Illuminate\Support\Facades\Route;
 
-Route::post('/register', [AuthViewController::class, 'register']);
-Route::post('/login', [AuthViewController::class, 'login']);
+Route::post('/register', [AuthController::class, 'register']);
+Route::post('/register', [AuthController::class, 'login']);
